@@ -1,6 +1,6 @@
 # Glosso
 
-![glosso]()
+![glosso](https://pbs.twimg.com/media/EusmA5HXYAMKyAB?format=jpg&name=4096x4096)
 
 A handwired 40% ortholinear grid keyboard with underglow LEDs.
 
