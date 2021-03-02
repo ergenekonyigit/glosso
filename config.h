@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DEVICE_VER 0x0001
 #define MANUFACTURER ErgenekonYigit
 #define PRODUCT Glosso
-// #define UNICODE_SELECTED_MODES UC_MAC
+#define UNICODE_SELECTED_MODES UC_MAC
 
 /* key matrix size */
 #define MATRIX_ROWS 4

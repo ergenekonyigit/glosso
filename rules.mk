@@ -30,6 +30,6 @@ UNICODE_ENABLE = no         # Unicode
 BLUETOOTH_ENABLE = no       # Enable Bluetooth with the Adafruit EZ-Key HID
 AUDIO_ENABLE = no           # Audio output on port C6
 FAUXCLICKY_ENABLE = no      # Use buzzer to emulate clicky switches
-UCIS_ENABLE = no            # Enable UCIS Unicode implementation
+UNICODEMAP_ENABLE = yes     # Enable Unicode map implementation
 
 LAYOUTS = planck_grid

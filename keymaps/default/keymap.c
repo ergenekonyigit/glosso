@@ -22,14 +22,76 @@ enum glosso_layers {
   _RAISE,
   _RGB,
   _SPACE,
+  _EMOJI,
   _ADJUST,
   _EMPTY
 };
 
-// Screen Lock shortcut for macOS
+// Screen Lock shortcut
 #define LOCKOSX LCTL(LSFT(KC_POWER))
-// Emoji popup for macOS
+// Emoji popup
 #define EMOJIPOPUP LGUI(LCTL(KC_SPC))
+// Switch input source
+#define SWITCHINPUT LCTL(LALT(KC_SPC))
+
+// Macros
+enum custom_keycodes {
+    RANDLOL = SAFE_RANGE,
+    EMOJI
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+    case RANDLOL:
+        if (record->event.pressed) {
+            SEND_STRING("asdasdfghfd");
+        }
+        break;
+
+    case EMOJI:
+        if (record->event.pressed) {
+            register_code(KC_LCTL);
+            register_code(KC_LALT);
+            register_code(KC_SPC);
+            layer_on(_EMOJI);
+            unregister_code(KC_LCTL);
+            unregister_code(KC_LALT);
+            unregister_code(KC_SPC);
+        } else {
+            register_code(KC_LCTL);
+            register_code(KC_LALT);
+            register_code(KC_SPC);
+            layer_off(_EMOJI);
+            unregister_code(KC_LCTL);
+            unregister_code(KC_LALT);
+            unregister_code(KC_SPC);
+        }
+        break;
+
+    }
+    return true;
+};
+
+// Emojis
+enum unicode_names {
+    // Row 0
+    JOY,  // joy 😂
+
+    // Row 1
+    CELE, // celebration 🙌
+    OK,   // ok hand sign 👌
+    PRAY  // pray 🙏
+};
+
+const uint32_t PROGMEM unicode_map[] = {
+    // Row 0
+    [JOY]  = 0X1F602,
+
+    // Row 1
+    [CELE] = 0x1F64C,
+    [OK]   = 0x1F44C,
+    [PRAY] = 0x1F64F
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -48,7 +110,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,          KC_Q,    KC_W,    KC_E,    KC_R,       KC_T,               KC_Y,               KC_U,       KC_I,    KC_O,    KC_P,    KC_BSPC,
     CTL_T(KC_ESC),   KC_A,    KC_S,    KC_D,    KC_F,       KC_G,               KC_H,               KC_J,       KC_K,    KC_L,    KC_SCLN, KC_QUOT,
     LSFT_T(KC_CAPS), KC_Z,    KC_X,    KC_C,    KC_V,       KC_B,               KC_N,               KC_M,       KC_COMM, KC_DOT,  KC_SLSH, KC_SFTENT,
-    MO(_RGB),        KC_LCTL, KC_LALT, KC_LGUI, MO(_LOWER), LT(_SPACE, KC_SPC), LT(_SPACE, KC_SPC), MO(_RAISE), KC_RGUI, KC_RALT, KC_RCTL, EMOJIPOPUP
+    MO(_RGB),        KC_LCTL, KC_LALT, KC_LGUI, MO(_LOWER), LT(_SPACE, KC_SPC), LT(_SPACE, KC_SPC), MO(_RAISE), KC_RGUI, KC_RALT, KC_RCTL, EMOJI
 ),
 
 /* lower
@@ -89,7 +151,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* rgb
  * ,-----------------------------------------------------------------------------------------------.
- * |       |  rgb  |rgbmod |       |       |       |       |   7   |   8   |   9   |   -   | bkspc |
+ * |       |  rgb  |rgbmod |       |randlol|       |       |   7   |   8   |   9   |   -   | bkspc |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
  * |       | hue + | hue - |       |       |       | enter |   4   |   5   |   6   |   +   |   *   |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
@@ -99,7 +161,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------------------'
  */
 [_RGB] = LAYOUT_planck_grid(
-    _______, RGB_TOG, RGB_MOD, _______, _______, _______, _______, KC_P7, KC_P8, KC_P9,   KC_PMNS, KC_BSPC,
+    _______, RGB_TOG, RGB_MOD, _______, RANDLOL, _______, _______, KC_P7, KC_P8, KC_P9,   KC_PMNS, KC_BSPC,
     _______, RGB_HUI, RGB_HUD, _______, _______, _______, KC_PENT, KC_P4, KC_P5, KC_P6,   KC_PPLS, KC_PAST,
     _______, RGB_SAI, RGB_SAD, _______, _______, _______, KC_PENT, KC_P1, KC_P2, KC_P3,   KC_PPLS, KC_PSLS,
     _______, RGB_VAI, RGB_VAD, _______, _______, _______, _______, KC_P0, KC_P0, KC_PDOT, KC_PCMM, KC_PEQL
@@ -121,6 +183,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+),
+
+/* emoji
+ * ,-----------------------------------------------------------------------------------------------.
+ * |s-input|  😂   |       |       |       |       |       |       |       |       |       |       |
+ * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+ * |       |  🙌   |  👌   |  🙏   |       |       |       |       |       |       |       |       |
+ * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+ * | popup |       |       |       |       |       |       |       |       |  up   |       |       |
+ * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+ * |       |       |       |       |       |       |       |       | left  | down  | right |       |
+ * `-----------------------------------------------------------------------------------------------'
+ */
+[_EMOJI] = LAYOUT_planck_grid(
+    SWITCHINPUT, X(JOY),  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+    _______,     X(CELE), X(OK),   X(PRAY), _______, _______, _______, _______, _______, _______, _______, _______,
+    EMOJIPOPUP,  _______, _______, _______, _______, _______, _______, _______, _______, KC_UP,   _______, _______,
+    _______,     _______, _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______
 ),
 
 /* adjust (lower + raise)
@@ -161,7 +241,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-// Enable the adjust layer when both lower and
+void matrix_init_user(void) {
+    set_unicode_input_mode(UC_MAC);
+}
+
+// Enable the adjust layer when both lower and raise
 layer_state_t layer_state_set_user(layer_state_t state) {
   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
