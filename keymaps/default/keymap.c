@@ -75,22 +75,54 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // Emojis
 enum unicode_names {
     // Row 0
-    JOY,  // joy 😂
+    JOY,   // 😂
+    SMIL2, // 😅
+    SMILE, // 😁
+    GRIN,  // 😊
+    KISS,  // 😘
+    HALO,  // 😇
+    PHEW,  // 😌
+    CONFU, // 😕
+    PENSV, // 😔
+    UNAMU, // 😒
+    DISAP, // 😞
 
     // Row 1
-    CELE, // celebration 🙌
-    OK,   // ok hand sign 👌
-    PRAY  // pray 🙏
+    CELE,  // 🙌
+    OK,    // 👌
+    PRAY,  // 🙏
+    CLAP,  // 👏
+    THMUP, // 👍
+
+    // Row 2
+    EYES,  // 👀
+    HUNRD  // 💯
 };
 
 const uint32_t PROGMEM unicode_map[] = {
     // Row 0
-    [JOY]  = 0X1F602,
+    [JOY]   = 0X1F602,
+    [SMIL2] = 0x1F605,
+    [SMILE] = 0x1F601,
+    [GRIN]  = 0x1F600,
+    [KISS]  = 0x1F618,
+    [HALO]  = 0x1F607,
+    [PHEW]  = 0x1F60C,
+    [CONFU] = 0x1F615,
+    [PENSV] = 0x1F614,
+    [UNAMU] = 0x1F612,
+    [DISAP] = 0x1F61E,
 
     // Row 1
-    [CELE] = 0x1F64C,
-    [OK]   = 0x1F44C,
-    [PRAY] = 0x1F64F
+    [CELE]  = 0x1F64C,
+    [OK]    = 0x1F44C,
+    [PRAY]  = 0x1F64F,
+    [CLAP]  = 0x1F44F,
+    [THMUP] = 0x1F44D,
+
+    // Row 2
+    [EYES]  = 0x1F440,
+    [HUNRD] = 0x1F4AF
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -187,20 +219,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* emoji
  * ,-----------------------------------------------------------------------------------------------.
- * |s-input|  😂   |       |       |       |       |       |       |       |       |       |       |
+ * |  tab  |  😂   |  😅   |  😁   |  😊   |  😘   |  😇   |  😌   |  😕   |  😔   |  😒   |  😞   |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * |       |  🙌   |  👌   |  🙏   |       |       |       |       |       |       |       |       |
+ * | cntrl |  🙌   |  👌   |  🙏   |  👏   |  👍   |       |       |       |       |       |       |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * | popup |       |       |       |       |       |       |       |       |  up   |       |       |
+ * | shift |  👀   |  💯   |       |       |       |       |       |       |  up   |       |       |
  * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
- * |       |       |       |       |       |       |       |       | left  | down  | right |       |
+ * |       | cntrl |  alt  |  cmd  |       |s-input| popup |       | left  | down  | right |       |
  * `-----------------------------------------------------------------------------------------------'
  */
 [_EMOJI] = LAYOUT_planck_grid(
-    SWITCHINPUT, X(JOY),  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-    _______,     X(CELE), X(OK),   X(PRAY), _______, _______, _______, _______, _______, _______, _______, _______,
-    EMOJIPOPUP,  _______, _______, _______, _______, _______, _______, _______, _______, KC_UP,   _______, _______,
-    _______,     _______, _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______
+    KC_TAB,  X(JOY),  X(SMIL2), X(SMILE), X(GRIN), X(KISS),     X(HALO),    X(PHEW),  X(CONFU), X(PENSV), X(UNAMU), X(DISAP),
+    KC_LCTL, X(CELE), X(OK),    X(PRAY),  X(CLAP), X(THMUP),    _______,    _______,  _______,  _______,  _______,  _______,
+    KC_LSFT, X(EYES), X(HUNRD), _______,  _______, _______,     _______,    _______,  _______,  KC_UP,    _______,  _______,
+    _______, KC_LCTL, KC_LALT,  KC_LGUI,  _______, SWITCHINPUT, EMOJIPOPUP, _______,  KC_LEFT,  KC_DOWN,  KC_RGHT,  _______
 ),
 
 /* adjust (lower + raise)
